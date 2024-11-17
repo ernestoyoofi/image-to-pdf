@@ -1,0 +1,124 @@
+.box-container {
+  width: 100%;
+  min-height: 100vh;
+}
+.box-container .list-card {
+  padding: 8px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box-container .list-card .card-canvas {
+  width: 200px;
+  background-color: white;
+  overflow: hidden;
+  border-radius: 7px;
+}
+.box-container .list-card .card-canvas img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+[dark-mode] .box-container .list-card .card-canvas {
+  background-color: black;
+}
+
+.boxing-center-control {
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.boxing-center-control .container-control {
+  width: 100%;
+  height: 450px;
+  max-width: 480px;
+  background-color: #fdfdfd;
+  overflow: hidden;
+  border-radius: 9px 9px 0px 0px;
+  transition: .3s;
+}
+[dark-mode] .boxing-center-control .container-control {
+  background-color: #080808;
+}
+.boxing-center-control .container-control .header-control {
+  width: 100%;
+  height: 50px;
+  background-color: white;
+  box-shadow: rgba(0,0,0,0.1) 0px 1px 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 14px;
+  user-select: none;
+  color: white;
+}
+[dark-mode] .boxing-center-control .container-control .header-control {
+  background-color: black;
+  color: white;
+}
+[dark-mode] .boxing-center-control * {
+  color: white;
+}
+.boxing-center-control .container-control .header-control .header-control-btn {
+  display: flex;
+}
+.boxing-center-control .container-control .header-control .header-control-btn button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  user-select: none;
+  margin-left: 9px;
+}
+.boxing-center-control .container-control .header-control h2 {
+  margin: 0px;
+  padding: 0px;
+  font-size: 1.1rem;
+}
+.boxing-center-control .container-control .content-control {
+  padding: 20px 14px;
+  padding-bottom: 40px;
+  font-size: 0.91rem;
+}
+.boxing-center-control .container-control .content-control .export-pdf {
+  width: 100%;
+  padding: 6px 12px;
+  background-color: #1418ff;
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.boxing-center-control .container-control .content-control .label-control {
+  display: block;
+  padding: 9px 0px;
+}
+.boxing-center-control .container-control .content-control select {
+  padding: 5px 14px;
+  border: 1px solid #8b8b8b;
+  border-radius: 5px;
+  background-color: transparent;
+  background: transparent;
+}
+.boxing-center-control .container-control .content-control select * {
+  color: black;
+}
+.boxing-center-control .container-control .content-control button {
+  padding: 7px 14px;
+  border: 1px solid #8b8b8b;
+  border-radius: 5px;
+  background-color: transparent;
+  cursor: pointer;
+}
