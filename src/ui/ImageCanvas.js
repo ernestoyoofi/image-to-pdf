@@ -44,68 +44,67 @@ const cmToPx = (mm) => (mm * (window.devicePixelRatio * 96 / 25.4))
 
 function CanvasControl({ width, height, size, data, padding, rotation }) {
   const refImage = useRef()
-  function BuildingCanvasImageRendering(size, padding, rotationDegrees) {
-    const canvas = document.createElement("canvas")
-    const ctx = canvas.getContext("2d")
-  
-    const paperSize = paperSizes[size]
-    if (!paperSize) throw new Error("Ukuran kertas tidak valid")
-    canvas.width = rotation == "landscape"? cmToPx(paperSize.height) : cmToPx(paperSize.width)
-    canvas.height = rotation == "landscape"? cmToPx(paperSize.width) : cmToPx(paperSize.height)
-    canvas.style.width = `${paperSize.width}cm`
-    canvas.style.height = `${paperSize.height}cm`
-  
-    const paddingValueC = parseInt(paddingValues[padding])
-    const rotationRadians = (rotationDegrees * Math.PI) / 180
-    ctx.fillStyle = "white"
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-    const img = new Image()
-    img.src = data.uri
-    img.onload = () => {
-      const availableWidth = canvas.width - 2 * paddingValueC
-      const availableHeight = canvas.height - 2 * paddingValueC
-      const scale = Math.min(availableWidth / img.width, availableHeight / img.height);
-      ctx.save()
-      ctx.translate(canvas.width / 2, canvas.height / 2)
-      ctx.rotate(rotationRadians)
-      ctx.drawImage(
-        img,
-        -((img.width * scale) / 2),
-        -((img.height * scale) / 2),
-        img.width * scale,
-        img.height * scale
-      )
-      ctx.restore()
-      const dataImg = canvas.toDataURL("image/jpeg")
-      if (refImage && refImage.current) {
-        refImage.current.setAttribute("src", dataImg)
-      } else {
-        console.error("refImage is not valid.")
-      }
-    }
-    img.onerror = (e) => {
-      console.error("Gambar gagal dimuat.", e)
-    }
-    const dataImg = canvas.toDataURL("image/jpeg")
-    refImage.current.setAttribute("src", dataImg)
-    refImage.current.setAttribute("c-width", canvas.width)
-    refImage.current.setAttribute("c-height", canvas.height)
-  }
   useEffect(() => {
+    function BuildingCanvasImageRendering(size, padding, rotationDegrees) {
+      const canvas = document.createElement("canvas")
+      const ctx = canvas.getContext("2d")
+    
+      const paperSize = paperSizes[size]
+      if (!paperSize) throw new Error("Ukuran kertas tidak valid")
+      canvas.width = rotation === "landscape"? cmToPx(paperSize.height) : cmToPx(paperSize.width)
+      canvas.height = rotation === "landscape"? cmToPx(paperSize.width) : cmToPx(paperSize.height)
+      canvas.style.width = `${paperSize.width}cm`
+      canvas.style.height = `${paperSize.height}cm`
+    
+      const paddingValueC = parseInt(paddingValues[padding])
+      const rotationRadians = (rotationDegrees * Math.PI) / 180
+      ctx.fillStyle = "white"
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+  
+      const img = new Image()
+      img.src = data.uri
+      img.onload = () => {
+        const availableWidth = canvas.width - 2 * paddingValueC
+        const availableHeight = canvas.height - 2 * paddingValueC
+        const scale = Math.min(availableWidth / img.width, availableHeight / img.height);
+        ctx.save()
+        ctx.translate(canvas.width / 2, canvas.height / 2)
+        ctx.rotate(rotationRadians)
+        ctx.drawImage(
+          img,
+          -((img.width * scale) / 2),
+          -((img.height * scale) / 2),
+          img.width * scale,
+          img.height * scale
+        )
+        ctx.restore()
+        const dataImg = canvas.toDataURL("image/jpeg")
+        if (refImage && refImage.current) {
+          refImage.current.setAttribute("src", dataImg)
+        } else {
+          console.error("refImage is not valid.")
+        }
+      }
+      img.onerror = (e) => {
+        console.error("Gambar gagal dimuat.", e)
+      }
+      const dataImg = canvas.toDataURL("image/jpeg")
+      refImage.current.setAttribute("src", dataImg)
+      refImage.current.setAttribute("c-width", canvas.width)
+      refImage.current.setAttribute("c-height", canvas.height)
+    }
     BuildingCanvasImageRendering(size, padding, 0)
-  }, [width, height, padding])
+  }, [width, height, padding, size, data.uri, rotation])
 
   return <div className="list-card" key={data.key}>
     <div className="card-canvas" style={{ width: width+"px", height: height+"px" }}>
-      <img ref={refImage} />
+      <img ref={refImage} alt="Canvas" />
     </div>
   </div>
 }
 
 export default function ImageCanvas({ removeImage, cancelAll, listImage, sizePaper, setSizePaper, rotation, setRotation, paddingPaper, setPaddingPaper }) {
   const [openMenu, openHeightMenu] = useState(true)
-  const sizeingBox = listSize[sizePaper || "A4"][rotation]
 
   async function exportToPdf() {
     const sizePaperFormat = {
@@ -121,7 +120,7 @@ export default function ImageCanvas({ removeImage, cancelAll, listImage, sizePap
     document.querySelectorAll('main .card-canvas img').forEach((canvas, i) => {
       const widthCa = Number(parseInt(canvas.getAttribute("c-width")))
       const heightCa = Number(parseInt(canvas.getAttribute("c-height")))
-      if(i != 0) {
+      if(i !== 0) {
         pdf.addPage(sizePaperQuick, rotation)
       }
       pdf.addImage(
@@ -142,8 +141,8 @@ export default function ImageCanvas({ removeImage, cancelAll, listImage, sizePap
             remove={removeImage}
             key={dataImg.key}
             rotation={rotation}
-            width={rotation == "landscape"? 420:297}
-            height={rotation == "landscape"? 297:420}
+            width={rotation === "landscape"? 420:297}
+            height={rotation === "landscape"? 297:420}
             size={sizePaper}
             data={dataImg}
             padding={paddingPaper}

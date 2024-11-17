@@ -48,7 +48,7 @@ export default function App() {
           let imgData = image
           imgData.push({key: image.length, name: dataImgForm.name, uri: dataimg})
           setImage([...imgData])
-          if((formArray.length - 1) == image.length || formArray.length == 1) {
+          if((formArray.length - 1) === image.length || formArray.length === 1) {
             // Apply Editor
             setEditorOpen(true)
           }
@@ -61,7 +61,7 @@ export default function App() {
   }
 
   function removeImageByIndex(index) {
-    setImage(image.filter(a => a.key != index))
+    setImage(image.filter(a => a.key !== index))
   }
 
   return <SnackbarProvider anchorOrigin={{
